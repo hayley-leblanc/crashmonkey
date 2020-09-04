@@ -195,7 +195,7 @@ expected_sync_sequence.append([('none'), ('fsync', 'bar')])
 # write,(foo, 0-256K), mmapwrite(0-4K), mmapwrite(252-256K), msync(0-64K), msync(192-256K)
 
 
-VALID_TEST_TYPES = ['crashmonkey', 'xfstest', 'xfstest-concise']
+VALID_TEST_TYPES = ['crashmonkey', 'xfstest', 'xfstest-concise', 'nova']
 
 def build_parser():
     parser = argparse.ArgumentParser(description='Automatic Crash Explorer v0.1')
@@ -1301,6 +1301,8 @@ def doPermutation(perm, test_type):
                 exec_command = 'python3 cmAdapter.py -b ../code/tests/' + dest_dir + '/base.cpp -t ' + j_lang_file + ' -p ../code/tests/' + dest_dir + '/ -o ' + str(global_count)
             elif test_type == 'xfstest':
                 exec_command = 'python3 xfstestAdapter.py -t ' + j_lang_file + ' -p ../code/tests/' + dest_dir + '/ -n ' + str(global_count) + " -f generic"
+            elif test_type == 'nova':
+                exec_command = 'python3 novaAdapter.py -b ../code/tests/' + dest_dir + '/novaBase.cpp -t ' + j_lang_file + ' -p ../code/tests/' + dest_dir + '/ -o ' + str(global_count)
             subprocess.call(exec_command, shell=True)
 
 
@@ -1450,6 +1452,12 @@ def main():
     #   print expected_sequence[i]
     #   print expected_sync_sequence[i]
     #   print '\n'
+
+    # NOVA only supports FALLOC_FL_KEEP_SIZE and does not support extended attributes 
+    # the NOVA logger currently does not log mmap'ed writes
+    if test_type == 'nova':
+        FallocOptions = ['FALLOC_FL_KEEP_SIZE']
+        OperationSet = ['creat', 'mkdir', 'falloc', 'write', 'dwrite', 'link', 'unlink', 'remove', 'rename', 'truncate']
 
 
     # This is basically the list of possible paramter options for each file-system operation. For example, if the fileset has 4 files and the op is creat, then there are 4 parameter options to creat. We log it just to get an estimate of the increase in the options as we expand the file set.
