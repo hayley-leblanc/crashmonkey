@@ -12,7 +12,7 @@
 #include "../BaseTestCase.h"
 #include "../../user_tools/api/workload.h"
 #include "../../user_tools/api/actions.h"
-#include "novaCheckpoint.h"
+#include "nova.h"
 
 using fs_testing::tests::DataTestResult;
 using fs_testing::user_tools::api::WriteData;

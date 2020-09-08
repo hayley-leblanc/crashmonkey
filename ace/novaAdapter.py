@@ -441,7 +441,7 @@ def insertWrite(contents, option, line, index_map, method):
 
     if option == 'write':
         # to_insert = '\n\t\t\t\tif ( WriteData ( fd_' + line.split(' ')[1] + ', ' + line.split(' ')[2] + ', ' + line.split(' ')[3] + ') < 0){ \n\t\t\t\t\tcm_->CmClose( fd_' + line.split(' ')[1] + '); \n\t\t\t\t\treturn errno;\n\t\t\t\t}\n\n'
-        to_insert = '\n\t\t\t\tif ( WriteData ( fd_' + line.split(' ')[1] + ', ' + line.split(' ')[2] + ', ' + line.split(' ')[3] + ') < 0){ \n\t\t\t\t\tclose( fd_' + line.split(' ')[1] + '); \n\t\t\t\t\treturn errno;\n\t\t\t\t}\n\n'
+        to_insert = '\n\t\t\t\tif ( novaWriteData ( fd_' + line.split(' ')[1] + ', ' + line.split(' ')[2] + ', ' + line.split(' ')[3] + ') < 0){ \n\t\t\t\t\tclose( fd_' + line.split(' ')[1] + '); \n\t\t\t\t\treturn errno;\n\t\t\t\t}\n\n'
 
         if method == 'setup':
             contents.insert(index_map['setup'], to_insert)
